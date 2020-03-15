@@ -51,11 +51,17 @@ const server = http.createServer((req, res) => {
                         Car.findById(urlComponents[2], (err, car) => {
                             if (err) {
                                 res.statusCode = 404
-                                res.end(err)
+                                res.end(err.message)
                             }
                             else {
-                                res.statusCode = 200
-                                res.end(JSON.stringify(car))
+                                if (car) {
+                                    res.statusCode = 200
+                                    res.end(JSON.stringify(car))
+                                }
+                                else {
+                                    res.statusCode = 404
+                                    res.end('no car')
+                                }
                             }
                         })
                     }
@@ -163,7 +169,7 @@ const server = http.createServer((req, res) => {
                                             res.statusCode = 404;
                                             res.end(err)
                                         }
-                                        else {
+                                        else if (car) {
                                             car.brand = newCar.brand
                                             car.model = newCar.model
                                             car.mpg = newCar.mpg
@@ -173,6 +179,9 @@ const server = http.createServer((req, res) => {
                                                     res.end(err)
                                                 }
                                             })
+                                        } else {
+                                            res.statusCode = 404;
+                                            res.end()
                                         }
                                     });
                                     res.statusCode = 200
@@ -219,12 +228,15 @@ const server = http.createServer((req, res) => {
                                                     res.statusCode = 500
                                                     res.end(err)
                                                 }
+                                                else {
+                                                    res.statusCode = 200
+                                                    res.end("Updated")
+                                                }
                                             })
                                         })
                                     }
                                 })
-                                res.statusCode = 200
-                                res.end("Updated")
+
                             }
                             catch (error) {
                                 res.statusCode = 400
@@ -251,7 +263,8 @@ const server = http.createServer((req, res) => {
                                             res.statusCode = 404;
                                             res.end(err)
                                         }
-                                        else {
+                                        else if (car) {
+                                            console.log(car)
                                             if (body.hasOwnProperty('brand')) {
                                                 car.brand = body.brand
                                             }
@@ -266,11 +279,18 @@ const server = http.createServer((req, res) => {
                                                     res.statusCode = 500
                                                     res.end(err)
                                                 }
+                                                else {
+                                                    res.statusCode = 200
+                                                    res.end("Updated")
+                                                }
                                             })
                                         }
+                                        else {
+                                            res.statusCode = 404;
+                                            res.end()
+                                        }
                                     });
-                                    res.statusCode = 200
-                                    res.end("Updated")
+
                                 } catch (error) {
                                     res.statusCode = 400
                                     res.end(error.message)
