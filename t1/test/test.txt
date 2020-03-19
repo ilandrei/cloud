@@ -1,0 +1,2 @@
+Accessing http://localhost:42069/ for 50 the average time is 0.0041259, the min is 0.003173 and the max is 0.01221
+Accessing http://localhost:42069/api?ip=92.86.185.101 for 5 the average time is 0.6926346, the min is 0.010364 and the max is 0.954503
